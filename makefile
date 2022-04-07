@@ -1,5 +1,5 @@
 CC =gcc
-
+INC =-I ./bootloader/
 all: boot.bin
 
 boot.bin : boot.o
@@ -7,8 +7,8 @@ boot.bin : boot.o
 	objdump -S boot.elf > boot.asm  
 	objcopy -S -O binary boot.elf boot.bin  
 
-boot.o: bootloader/boot.s
-	gcc -c -m32 -o boot.o bootloader/boot.s -g
+boot.o: bootloader/boot.s bootloader/bios_tools.s
+	gcc -c -m32 -o boot.o bootloader/boot.s -g -O0 $(INC)
 
 qemu-nox-gdb: boot.bin
 	qemu-system-i386 -fda boot.bin -nographic -boot a -s -S -smp 2
