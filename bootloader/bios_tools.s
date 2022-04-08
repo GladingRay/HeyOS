@@ -70,6 +70,29 @@ L1:
     addb    $'0',       %al
 L1end:
     ret
+
+read_disk:
+    pusha
+
+    movb    $0x02,  %ah     # read
+    movb    %dh,    %al     # 几个sector
+    movb    $0x0,   %ch
+    movb    $0x2,   %cl 
+    movb    $0x0,   %dh
     
+    int     $0x13
+    jc      disk_error
+
+disk_end:
+    popa
+    ret
+
+disk_error:
+    
+    push    $error_msg
+    call    puts
+    add     $0x2,   %sp
+
+    jmp     disk_end
 
     
