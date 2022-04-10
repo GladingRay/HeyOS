@@ -7,7 +7,7 @@ HeyOS.img: boot.bin
 	dd if=boot.bin of=HeyOS.img conv=notrunc
 
 boot.bin : boot.o
-	ld -m elf_i386 -N -e _start -Ttext 0x7c00 -o boot.elf boot.o 
+	ld -m elf_i386 -N -e boot_start -Ttext 0x7c00 -o boot.elf boot.o 
 	objdump -S boot.elf > boot.asm  
 	objcopy -S -O binary boot.elf boot.bin  
 
