@@ -1,6 +1,9 @@
 
 .equ    VGA_ADR,    0xb8000
 .equ    WonB,       0x07
+.equ    KER_ADR,    0x1000
+
+
 
 .code16
 .globl boot_start
@@ -15,15 +18,11 @@ boot_start:
     call    puts
     add     $0x2,           %sp
 
-    // movw    $hexdata,       %bx             # store where memory
-    // movb    $0x1,           %dh             # read  how many sectors
-    // movb    %dl,            boot_driver     # boot device number and
-    // movb    boot_driver,    %dl             # record it
-    // call    read_disk
-
-    // push    $hexdata
-    // call    put_hex
-    // add     $0x2,           %sp
+    movw    $KER_ADR,       %bx             # store where memory
+    movb    $0x5,           %dh             # read  how many sectors
+    movb    %dl,            boot_driver     # boot device number and
+    movb    boot_driver,    %dl             # record it
+    call    read_disk
 
 switch_pm:
     cli                 # clear int
@@ -40,6 +39,9 @@ here:
 .include "bios_tools.s"
 
 .code32
+.globl kernel_entry
+.extern kernel_entry
+
 pm_start:
     movw    $(2<<3),    %ax
     movw    %ax,        %ds
@@ -53,6 +55,8 @@ pm_start:
     push    $msg_pm
     call    puts_vga
     add     $0x4,   %esp
+
+    call    0x10fd
 
     jmp     .
 
@@ -70,7 +74,7 @@ putc_vga:
     je      puts_vga_end
     movw    %ax,        (%ecx)
     inc     %ebx
-    add    $0x2,       %ecx
+    add     $0x2,       %ecx
     jmp     putc_vga
 
 puts_vga_end:
@@ -109,8 +113,8 @@ gdt_data:
 gdt_desc:
     .word   gdt_desc-gdt-1
     .long   gdt
-
-.org    510
-.word   0xaa55
 hexdata:
     .word   0x12af
+.org    510
+.word   0xaa55
+
