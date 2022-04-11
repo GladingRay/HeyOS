@@ -56,7 +56,7 @@ pm_start:
     call    puts_vga
     add     $0x4,   %esp
 
-    call    0x10fd
+    call    KER_ADR
 
     jmp     .
 

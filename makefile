@@ -4,14 +4,16 @@ CFLAGS 	=-fno-pic -static -fno-builtin -fno-strict-aliasing -ffreestanding -c -m
 
 HEADERS=./hey/include/*.h
 KERNEL_DIR=hey/kernel
-
-SRC=$(wildcard $(KERNEL_DIR:%=%/*.c))
+SRC:=./hey/kernel_entry.c
+SRC+=$(wildcard $(KERNEL_DIR:%=%/*.c))
 OBJ=$(SRC:%.c=build/%.o)
 
 all : mkbuild HeyOS.img
 
 mkbuild:
 	-mkdir $(sort $(dir $(OBJ))) -p
+	echo $(OBJ)
+	echo $(SRC)
 
 HeyOS.img: build/boot.bin build/kernel.bin
 	dd if=/dev/zero of=HeyOS.img count=1000

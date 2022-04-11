@@ -10,6 +10,17 @@ typedef struct _vga_elem
     char mode;
 } vga_elem, * pvga_elem;
 
+typedef struct _cursor
+{
+    unsigned int x;
+    unsigned int y;
+} cursor, * pcursor;
+
+extern pvga_elem frame_buffer;
+extern cursor cs;
+
+void init_fb();
+
 void clear_screen();
 
 void print_str(const char * str);
