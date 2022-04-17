@@ -4,8 +4,8 @@ void kernel_entry()
 {
     init_fb();
     clear_screen();
-    char * hello_str = "[rrr]GR!, Welcom to OS world!\r\n";
-    for(int i = 0; i < 26; i++)
+    char * hello_str = "[rrr]GR! Welcom to OS world!\r\n";
+    for(int i = 0; i < 99; i++)
     {
         hello_str[1] = '0' + i / 100;
         hello_str[2] = '0' + (i % 100) / 10;

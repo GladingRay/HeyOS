@@ -1,7 +1,9 @@
 
 .equ    VGA_ADR,    0xb8000
 .equ    WonB,       0x07
-.equ    KER_ADR,    0x1000
+.equ    KER_SEG_ADR, 0x1000
+.equ    KER_OFFSET,  0x0000
+.equ    KER_ADR,    0x10000
 
 
 
@@ -18,8 +20,10 @@ boot_start:
     call    puts
     add     $0x2,           %sp
 
-    movw    $KER_ADR,       %bx             # store where memory
-    movb    $0x5,           %dh             # read  how many sectors
+    movw    $KER_SEG_ADR,   %ax
+    movw    %ax,            %es        
+    movw    $KER_OFFSET,    %bx             # store where memory
+    movb    $0x10,           %dh             # read  how many sectors
     movb    %dl,            boot_driver     # boot device number and
     movb    boot_driver,    %dl             # record it
     call    read_disk

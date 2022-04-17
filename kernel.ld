@@ -9,9 +9,9 @@ SECTIONS
 {
 	/* Link the kernel at this address: "." means the current address */
         /* Must be equal to KERNLINK */
-	. = 0x1000;
+	. = 0x10000;
 
-	.text : AT(0x1000) {
+	.text : AT(0x10000) {
 		*(.text .stub .text.* .gnu.linkonce.t.*)
 	}
 
