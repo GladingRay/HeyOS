@@ -22,7 +22,8 @@ HeyOS.img: build/boot.bin build/kernel.bin
 
 build/boot.bin : build/boot.o
 	ld -m elf_i386 -N -e boot_start -Ttext 0x7c00 -o build/boot.elf build/boot.o 
-	objdump -S build/boot.elf > build/boot.asm  
+	objdump -D build/boot.elf > build/boot.asm
+	objdump -D build/boot.o > build/boot_unld.asm
 	objcopy -S -O binary build/boot.elf build/boot.bin  
 
 build/boot.o: bootloader/boot.s bootloader/bios_tools.s
@@ -30,7 +31,7 @@ build/boot.o: bootloader/boot.s bootloader/bios_tools.s
 
 build/kernel.bin: $(OBJ)
 	ld -m elf_i386 -N -T kernel.ld -o build/kernel.elf $^
-	objdump -S build/kernel.elf > build/kernel.asm
+	objdump -D build/kernel.elf > build/kernel.asm
 	objcopy -S -O binary build/kernel.elf build/kernel.bin
 #	ld -m elf_i386 -N -e kernel_entry -Ttext 0x1000 -o build/kernel.bin $^ --oformat binary
 

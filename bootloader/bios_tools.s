@@ -63,15 +63,15 @@ put_hex:
 
 num2char:
     cmpb    $0xa,   %al
-    jl      L1
+    jl      .L1
     addb    $('a'-0xa),  %al
     jmp L1end
-L1:
+.L1:
     addb    $'0',       %al
 L1end:
     ret
 
-read_disk:
+read_disk_by_io:
     pusha
 
     movb    $0x02,  %ah     # read

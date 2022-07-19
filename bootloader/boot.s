@@ -1,9 +1,7 @@
 
 .equ    VGA_ADR,    0xb8000
 .equ    WonB,       0x07
-.equ    KER_SEG_ADR, 0x1000
-.equ    KER_OFFSET,  0x0000
-.equ    KER_ADR,    0x10000
+.equ    KER_ADR,    0x100000
 
 
 
@@ -20,14 +18,6 @@ boot_start:
     call    puts
     add     $0x2,           %sp
 
-    movw    $KER_SEG_ADR,   %ax
-    movw    %ax,            %es        
-    movw    $KER_OFFSET,    %bx             # store where memory
-    movb    $0x10,           %dh             # read  how many sectors
-    movb    %dl,            boot_driver     # boot device number and
-    movb    boot_driver,    %dl             # record it
-    call    read_disk
-
 switch_pm:
     cli                 # clear int
 
@@ -43,8 +33,6 @@ here:
 .include "bios_tools.s"
 
 .code32
-.globl kernel_entry
-.extern kernel_entry
 
 pm_start:
     movw    $(2<<3),    %ax
@@ -59,6 +47,9 @@ pm_start:
     push    $msg_pm
     call    puts_vga
     add     $0x4,   %esp
+
+
+    call    read_disk_by_io
 
     call    KER_ADR
 
