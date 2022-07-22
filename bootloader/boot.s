@@ -7,7 +7,6 @@
 
 .code16
 .globl boot_start
-
 boot_start:
     movw    %cs,            %ax
     movw    %ax,            %ds
@@ -112,4 +111,3 @@ hexdata:
     .word   0x12af
 .org    510
 .word   0xaa55
-
